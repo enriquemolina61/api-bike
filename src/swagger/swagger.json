@@ -1,0 +1,239 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Todo List - Alvalenda",
+    "description": "API for CRUD operations on API Todo List",
+    "termsOfService": "",
+    "contact": {
+      "name": "Flavio Alvarenga",
+      "url": "https://github.com/alvalenda",
+      "email": "flavio.alva@outlook.com"
+    },
+    "license": {
+      "name": "",
+      "url": ""
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-todolist-alvalenda.herokuapp.com/todos",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000/todos",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/find-all": {
+      "get": {
+        "tags": [["Todo"]],
+        "summary": "List containing all Todos",
+        "description": "Rout responsible for listing all todos",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Todo"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/todo/{id}": {
+      "get": {
+        "tags": [["Todo"]],
+        "summary": "Find todo by id",
+        "description": "Rout responsible for finding todo by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of todo to be found",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/create": {
+      "post": {
+        "tags": [["Todo"]],
+        "summary": "Create a todo",
+        "description": "Rout responsible for creating todo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Todo"
+              }
+            }
+          },
+          "required": true
+        },
+        "examples": {
+          "application/json": {
+            "summary": "Example of todo",
+            "value": {
+              "todo": "Task of todo 1",
+              "completed": false,
+              "created_at": "25/09/2022 07:55:15",
+              "completed_at": "25/09/2022 13:42:56"
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/update/{id}": {
+      "put": {
+        "tags": [["Todo"]],
+        "summary": "Update a todo by id",
+        "description": "Rout responsible for updating a todo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of todo to be updated",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Todo"
+              }
+            }
+          },
+          "required": true
+        },
+        "examples": {
+          "application/json": {
+            "summary": "Example of todo",
+            "value": {
+              "todo": "Task of todo 1 edited",
+              "completed": false,
+              "created_at": "25/09/2022 07:55:15",
+              "completed_at": "25/09/2022 13:42:56"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/delete/{id}": {
+      "delete": {
+        "tags": [["Todo"]],
+        "summary": "Delete a todo by id",
+        "description": "Rout responsible for deleting a todo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of todo to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Todo": {
+        "type": "object",
+        "properties": {
+          "todo": {
+            "type": "string",
+            "minLength": "8",
+            "maxLength": "60"
+          },
+          "completed": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "pattern": "^([1-9]|([012][0-9])|(3[01]))\\-([0]{0,1}[1-9]|1[012])\\-\\d\\d\\d\\d\\s([0-1]?[0-9]|2?[0-3]):([0-5]\\d)$"
+          },
+          "completed_at": {
+            "type": "string",
+            "pattern": "^([1-9]|([012][0-9])|(3[01]))\\-([0]{0,1}[1-9]|1[012])\\-\\d\\d\\d\\d\\s([0-1]?[0-9]|2?[0-3]):([0-5]\\d)$",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}
